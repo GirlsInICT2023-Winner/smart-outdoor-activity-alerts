@@ -1,0 +1,28 @@
+import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BCM)
+PIR_PIN = 7 # Use pin 7
+
+GPIO.setup(PIR_PIN, GPIO.IN)
+
+try:
+    # Print Module test
+    print("PIR module test (CTRL+C to exit)")
+    time.sleep(2)
+    print("ready")
+    
+    # loop
+    while True:
+        # If GPIO.If the input (PIR_PIN) value is True (when movement is detected)
+        if GPIO.input(PIR_PIN):
+            # Prints the current time
+            t = time.localtime()
+            print("%d:%d:%d motion detected!" % (t.tm_hour, t.tm_min, t.tm_sec))
+        time.sleep(0.05)
+        
+except KeyboardInterrupt:
+    # Print program exit message
+    print("quit")
+    # Initializing GPIO Settings
+    GPIO.cleanup()
