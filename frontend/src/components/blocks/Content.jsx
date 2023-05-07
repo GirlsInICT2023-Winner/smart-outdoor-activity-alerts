@@ -7,30 +7,23 @@ import Logo from "../atoms/Logo";
 const Content = () => {
   const [city, setCity] = useState("");
   const mapElement = useRef(null);
-  const [playgroundInfo, setPlaygroundInfo] = useState([]);
+  const [playgroundInfo, setPlaygroundInfo] = useState(null);
+  const [currentPosition, setCurrentPosition] = useState(null);
 
   // api 로 받아옴
   useEffect(() => {
+    console.log("loading...");
     fetch("/api/playground")
-      .then((response) => response.text())
+      .then((response) => response.json())
       .then((info) => {
-        console.log(`info ${info}`);
-        setPlaygroundInfo(info);
+        console.log(info.result);
+        setPlaygroundInfo(info.result);
+        loadScript(
+          `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_MAP_KEY}&libraries=places&callback=initMap`
+        );
       });
   }, []);
 
-  // 컴포넌트가 마운트될때 수동으로 스크립트를 넣어줌
-  // script보다 window.initMap이 먼저 선언되도록
-  const loadScript = useCallback((url) => {
-    const firstScript = window.document.getElementsByTagName("script")[0];
-    const newScript = window.document.createElement("script");
-    newScript.src = url;
-    newScript.async = true;
-    newScript.defer = true;
-    firstScript?.parentNode?.insertBefore(newScript, firstScript);
-  }, []);
-
-  const [currentPosition, setCurrentPosition] = useState(null);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -73,6 +66,8 @@ const Content = () => {
       [currentPosition]
     );
 
+    // loadscript
+
     const markers = [
       {
         playgroundIdx: 99,
@@ -97,7 +92,7 @@ const Content = () => {
         pm10: 10,
         pm2_5: 10,
         air: 10.88,
-        level: "Moderate",
+        level: "PERMITTED",
         tem: 14.71,
         hum: 47,
       },
@@ -110,7 +105,7 @@ const Content = () => {
         pm10: 20,
         pm2_5: 10,
         air: 10.88,
-        level: "Moderate",
+        level: "PERMITTED",
         tem: 14.71,
         hum: 47,
       },
@@ -123,7 +118,7 @@ const Content = () => {
         pm10: 100,
         pm2_5: 110,
         air: 10.88,
-        level: "Moderate",
+        level: "CAUTION",
         tem: 14.71,
         hum: 47,
       },
@@ -136,7 +131,7 @@ const Content = () => {
         pm10: 40,
         pm2_5: 140,
         air: 10.88,
-        level: "Moderate",
+        level: "CAUTION",
         tem: 14.71,
         hum: 47,
       },
@@ -149,7 +144,7 @@ const Content = () => {
         pm10: 50,
         pm2_5: 70,
         air: 10.88,
-        level: "Moderate",
+        level: "CAUTION",
         tem: 14.71,
         hum: 47,
       },
@@ -162,7 +157,7 @@ const Content = () => {
         pm10: 60,
         pm2_5: 50,
         air: 10.88,
-        level: "Moderate",
+        level: "CAUTION",
         tem: 14.71,
         hum: 47,
       },
@@ -175,7 +170,7 @@ const Content = () => {
         pm10: 70,
         pm2_5: 55,
         air: 10.88,
-        level: "Moderate",
+        level: "CAUTION",
         tem: 14.71,
         hum: 47,
       },
@@ -188,7 +183,7 @@ const Content = () => {
         pm10: 80,
         pm2_5: 50,
         air: 10.88,
-        level: "Good",
+        level: "PERMITTED",
         tem: 14.71,
         hum: 47,
       },
@@ -201,7 +196,7 @@ const Content = () => {
         pm10: 90,
         pm2_5: 60,
         air: 10.88,
-        level: "Good",
+        level: "PERMITTED",
         tem: 14.71,
         hum: 47,
       },
@@ -214,7 +209,7 @@ const Content = () => {
         pm10: 110,
         pm2_5: 90,
         air: 10.88,
-        level: "Good",
+        level: "PERMITTED",
         tem: 14.71,
         hum: 47,
       },
@@ -227,7 +222,7 @@ const Content = () => {
         pm10: 110,
         pm2_5: 50,
         air: 10.88,
-        level: "Unhealthy",
+        level: "PROHIBITTED",
         tem: 14.71,
         hum: 47,
       },
@@ -240,7 +235,7 @@ const Content = () => {
         pm10: 100,
         pm2_5: 80,
         air: 10.88,
-        level: "Unhealthy",
+        level: "PROHIBITTED",
         tem: 14.71,
         hum: 47,
       },
@@ -343,15 +338,26 @@ const Content = () => {
     map.addListener("click", () => {
       infoWindow.close();
     });
-  }, [currentPosition]);
+  }, [currentPosition, playgroundInfo]);
+
+  const loadScript = useCallback((url) => {
+    const firstScript = window.document.getElementsByTagName("script")[0];
+    const newScript = window.document.createElement("script");
+    newScript.src = url;
+    newScript.async = true;
+    newScript.defer = true;
+
+    // 스크립트 로딩이 끝나면 initMap 함수를 호출
+    newScript.onload = () => {
+      window.initMap();
+    };
+
+    firstScript?.parentNode?.insertBefore(newScript, firstScript);
+  }, []);
 
   useEffect(() => {
-    loadScript(
-      `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_MAP_KEY}&callback=initMap&language=en`
-    );
-
     window.initMap = initMap;
-  }, [initMap, loadScript]);
+  }, [initMap]);
 
   return (
     <div>
