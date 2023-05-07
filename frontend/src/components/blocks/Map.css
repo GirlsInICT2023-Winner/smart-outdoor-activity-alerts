@@ -45,7 +45,8 @@
 }
 
 .map__item {
-  width: 400px;
+
+  min-width: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -4,9 +4,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -45,7 +44,7 @@ public class PlaygroundEntity{
     private Double air;
 
     @Column(name = "createdAt")
-    private String createdAt;
+    private Timestamp createdAt;
 
     @Column(name = "temperature")
     private Double temperature;
@@ -57,7 +56,7 @@ public class PlaygroundEntity{
     public PlaygroundEntity(long idx, String name, String loc,
                             Double lat, Double lng, Double dust,
                             String pir, Double ultradust, String level,
-                            Double air, String createdAt,
+                            Double air, Timestamp createdAt,
                             Double temperature, Double humidity){
         this.idx = idx;
         this.name = name;
