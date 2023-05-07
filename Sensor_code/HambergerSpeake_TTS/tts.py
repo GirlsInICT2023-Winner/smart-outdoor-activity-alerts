@@ -1,6 +1,5 @@
 from gtts import gTTS
 import os
-import time
 import pygame
 
 # define function to convert text to speech and play it
