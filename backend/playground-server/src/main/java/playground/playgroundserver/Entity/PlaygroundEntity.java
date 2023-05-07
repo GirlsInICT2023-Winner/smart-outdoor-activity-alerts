@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "playground")
+@Table(name = "sensor")
 public class PlaygroundEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
