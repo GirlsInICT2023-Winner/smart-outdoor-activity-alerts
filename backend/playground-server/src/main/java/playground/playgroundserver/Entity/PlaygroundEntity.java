@@ -29,35 +29,35 @@ public class PlaygroundEntity{
     private Double lng;
 
     @Column(name = "dust")
-    private Double dust;
+    private float dust;
 
     @Column(name = "pir")
     private String pir;
 
     @Column(name = "ultradust")
-    private Double ultradust;
+    private float ultradust;
 
     @Column(name = "level")
     private String level;
 
     @Column(name = "air")
-    private Double air;
+    private int air;
 
     @Column(name = "createdAt")
     private Timestamp createdAt;
 
     @Column(name = "temperature")
-    private Double temperature;
+    private float temperature;
 
     @Column(name = "humidity")
-    private Double humidity;
+    private float humidity;
 
     @Builder
     public PlaygroundEntity(long idx, String name, String loc,
-                            Double lat, Double lng, Double dust,
-                            String pir, Double ultradust, String level,
-                            Double air, Timestamp createdAt,
-                            Double temperature, Double humidity){
+                            Double lat, Double lng, float dust,
+                            String pir, float ultradust, String level,
+                            int air, Timestamp createdAt,
+                            float temperature, float humidity){
         this.idx = idx;
         this.name = name;
         this.loc = loc;

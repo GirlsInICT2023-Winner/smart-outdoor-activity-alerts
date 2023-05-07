@@ -15,11 +15,11 @@ public class PlaygroundDTO {
         private String loc;
         private Double lat;
         private Double lng;
-        private Double dust;
-        private Double ultradust;
+        private float dust;
+        private float ultradust;
         private String level;
-        private Double air;
-        private Double temperature;
-        private Double humidity;
+        private int air;
+        private float temperature;
+        private float humidity;
     }
 }
