@@ -7,6 +7,17 @@ import Logo from "../atoms/Logo";
 const Content = () => {
   const [city, setCity] = useState("");
   const mapElement = useRef(null);
+  const [playgroundInfo, setPlaygroundInfo] = useState([]);
+
+  // api 로 받아옴
+  useEffect(() => {
+    fetch("/api/test")
+      .then((response) => response.text())
+      .then((info) => {
+        console.log(`info ${info}`);
+        setPlaygroundInfo(info);
+      });
+  }, []);
 
   // 컴포넌트가 마운트될때 수동으로 스크립트를 넣어줌
   // script보다 window.initMap이 먼저 선언되도록
@@ -63,8 +74,19 @@ const Content = () => {
     );
 
     const markers = [
-      // 놀이터 별로 마커 설정
-
+      // 방법 (1) markers에 넣어주기
+      {
+        playgroundIdx: 99,
+        name: playgroundInfo.name,
+        loc: playgroundInfo.loc,
+        lat: playgroundInfo.lat,
+        lng: playgroundInfo.lng,
+        pm10: playgroundInfo.pm10,
+        pm2_5: playgroundInfo.pm2_5,
+        air: playgroundInfo.air,
+        level: playgroundInfo.level,
+      },
+      // 더미
       {
         playgroundIdx: 0,
         name: "Baengnyeon Children's Park",
@@ -201,64 +223,69 @@ const Content = () => {
 
     const infoWindow = new google.maps.InfoWindow();
 
-    markers.forEach(({ lat, lng, loc, name, pm2_5, pm10, air, level }) => {
-      let labelClass;
-      // let text = "Good";
+    markers.forEach(
+      ({ playgroundIdx, lat, lng, loc, name, pm2_5, pm10, air, level }) => {
+        let labelClass;
 
-      if (level === "Good") {
-        labelClass = "icon-label-green";
-      } else if (level === "Moderate") {
-        labelClass = "icon-label-yellow";
-      } else {
-        labelClass = "icon-label-red";
-      }
+        if (level === "Good") {
+          labelClass = "icon-label-green";
+        } else if (level === "Moderate") {
+          labelClass = "icon-label-yellow";
+        } else {
+          labelClass = "icon-label-red";
+        }
 
-      // // 임의의 기준으로 설정해놓음
-      // if (pm2_5 <= 30) {
-      //   labelClass = "icon-label-yellow";
-      //   // text = "Good";
-      // } else if (pm2_5 <= 50) {
-      //   labelClass = "icon-label-green";
-      //   // text = "Moderate";
-      // } else {
-      //   labelClass = "icon-label-red";
-      //   // text = "Unhealthy";
-      // }
-
-      const marker = new google.maps.Marker({
-        position: { lat, lng },
-        map: map,
-        label: {
-          text: level,
-          className: labelClass,
-        },
-        icon: {
-          url: "",
-          size: new google.maps.Size(50, 20),
-        },
-        clickable: true, // 마커 및 라벨 클릭 가능하도록 설정
-      });
-
-      marker.addListener("click", () => {
-        // marker 를 클릭하면 보여줄 화면
-        const content = `
-        <div class="map__item">
-          <div class="item__title">
-            ${name} (${loc})
-          </div>
-          <div class="item__pm10">fine dust: ${pm10}</div>
-          <div class="item__pm2_5">ultrafine dust: ${pm2_5}</div>
-          <div class="item__air">air: ${air}</div>
-        </div>
-        `;
-
-        infoWindow.setContent(content);
-        infoWindow.open({
-          anchor: marker,
-          map,
+        const marker = new google.maps.Marker({
+          position: { lat, lng },
+          map: map,
+          label: {
+            text: playgroundIdx === 99 ? playgroundInfo.level : level,
+            className: labelClass,
+          },
+          icon: {
+            url: "",
+            size: new google.maps.Size(50, 20),
+          },
+          clickable: true, // 마커 및 라벨 클릭 가능하도록 설정
         });
-      });
-    });
+
+        marker.addListener("click", () => {
+          // 방법(2)
+
+          // marker 를 클릭하면 보여줄 화면
+          let content;
+          if (playgroundIdx === 99) {
+            content = `
+            <div class="map__item">
+                <div class="item__title">
+                    ${playgroundInfo.name} (${playgroundInfo.loc})
+                </div>
+                <div class="item__pm10">fine dust: ${playgroundInfo.pm10}</div>
+                <div class="item__pm2_5">ultrafine dust: ${playgroundInfo.pm2_5}</div>
+                <div class="item__air">air: ${playgroundInfo.air}</div>
+            </div>
+            `;
+          } else {
+            content = `
+            <div class="map__item">
+                <div class="item__title">
+                    ${name} (${loc})
+                </div>
+                <div class="item__pm10">fine dust: ${pm10}</div>
+                <div class="item__pm2_5">ultrafine dust: ${pm2_5}</div>
+                <div class="item__air">air: ${air}</div>
+            </div>
+            `;
+          }
+
+          infoWindow.setContent(content);
+          infoWindow.open({
+            anchor: marker,
+            map,
+          });
+        });
+      }
+    );
     map.addListener("click", () => {
       infoWindow.close();
     });
