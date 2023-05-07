@@ -45,6 +45,53 @@
 }
 
 .map__item {
-  width: 300px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 500;
+  color: black;
+  padding: 10px 0px;
+}
+
+.item__title {
   font-size: 24px;
+  font-weight: 600;
+  color: black;
+}
+
+.item__loc {
+  font-size: 18px;
+  font-weight: 400;
+  color: gray;
+}
+
+.item__dust {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.img__dust,
+.img__weather {
+  width: 25px;
+  height: 25px;
+}
+
+.item__pm10,
+.item__temperature {
+  margin: 5px;
+}
+
+.item__weather {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.img__weather {
+  margin-right: 5px;
 }

@@ -11,7 +11,7 @@ const Content = () => {
 
   // api 로 받아옴
   useEffect(() => {
-    fetch("/api/test")
+    fetch("/api/playground")
       .then((response) => response.text())
       .then((info) => {
         console.log(`info ${info}`);
@@ -74,17 +74,18 @@ const Content = () => {
     );
 
     const markers = [
-      // 방법 (1) markers에 넣어주기
       {
         playgroundIdx: 99,
         name: playgroundInfo.name,
         loc: playgroundInfo.loc,
         lat: playgroundInfo.lat,
         lng: playgroundInfo.lng,
-        pm10: playgroundInfo.pm10,
-        pm2_5: playgroundInfo.pm2_5,
+        pm10: playgroundInfo.dust,
+        pm2_5: playgroundInfo.ultradust,
         air: playgroundInfo.air,
         level: playgroundInfo.level,
+        tem: playgroundInfo.temperature,
+        hum: playgroundInfo.humidity,
       },
       // 더미
       {
@@ -97,6 +98,8 @@ const Content = () => {
         pm2_5: 10,
         air: 10.88,
         level: "Moderate",
+        tem: 14.71,
+        hum: 47,
       },
       {
         playgroundIdx: 1,
@@ -108,6 +111,8 @@ const Content = () => {
         pm2_5: 10,
         air: 10.88,
         level: "Moderate",
+        tem: 14.71,
+        hum: 47,
       },
       {
         playgroundIdx: 2,
@@ -119,6 +124,8 @@ const Content = () => {
         pm2_5: 110,
         air: 10.88,
         level: "Moderate",
+        tem: 14.71,
+        hum: 47,
       },
       {
         playgroundIdx: 3,
@@ -130,6 +137,8 @@ const Content = () => {
         pm2_5: 140,
         air: 10.88,
         level: "Moderate",
+        tem: 14.71,
+        hum: 47,
       },
       {
         playgroundIdx: 4,
@@ -141,6 +150,8 @@ const Content = () => {
         pm2_5: 70,
         air: 10.88,
         level: "Moderate",
+        tem: 14.71,
+        hum: 47,
       },
       {
         playgroundIdx: 5,
@@ -152,6 +163,8 @@ const Content = () => {
         pm2_5: 50,
         air: 10.88,
         level: "Moderate",
+        tem: 14.71,
+        hum: 47,
       },
       {
         playgroundIdx: 6,
@@ -163,6 +176,8 @@ const Content = () => {
         pm2_5: 55,
         air: 10.88,
         level: "Moderate",
+        tem: 14.71,
+        hum: 47,
       },
       {
         playgroundIdx: 7,
@@ -174,6 +189,8 @@ const Content = () => {
         pm2_5: 50,
         air: 10.88,
         level: "Good",
+        tem: 14.71,
+        hum: 47,
       },
       {
         playgroundIdx: 8,
@@ -185,6 +202,8 @@ const Content = () => {
         pm2_5: 60,
         air: 10.88,
         level: "Good",
+        tem: 14.71,
+        hum: 47,
       },
       {
         playgroundIdx: 9,
@@ -196,6 +215,8 @@ const Content = () => {
         pm2_5: 90,
         air: 10.88,
         level: "Good",
+        tem: 14.71,
+        hum: 47,
       },
       {
         playgroundIdx: 10,
@@ -207,6 +228,8 @@ const Content = () => {
         pm2_5: 50,
         air: 10.88,
         level: "Unhealthy",
+        tem: 14.71,
+        hum: 47,
       },
       {
         playgroundIdx: 11,
@@ -218,13 +241,27 @@ const Content = () => {
         pm2_5: 80,
         air: 10.88,
         level: "Unhealthy",
+        tem: 14.71,
+        hum: 47,
       },
     ];
 
     const infoWindow = new google.maps.InfoWindow();
 
     markers.forEach(
-      ({ playgroundIdx, lat, lng, loc, name, pm2_5, pm10, air, level }) => {
+      ({
+        playgroundIdx,
+        lat,
+        lng,
+        loc,
+        name,
+        pm2_5,
+        pm10,
+        air,
+        level,
+        tem,
+        hum,
+      }) => {
         let labelClass;
 
         if (level === "Good") {
@@ -250,30 +287,47 @@ const Content = () => {
         });
 
         marker.addListener("click", () => {
-          // 방법(2)
-
           // marker 를 클릭하면 보여줄 화면
           let content;
           if (playgroundIdx === 99) {
             content = `
             <div class="map__item">
                 <div class="item__title">
-                    ${playgroundInfo.name} (${playgroundInfo.loc})
+                    ${playgroundInfo.name} 
                 </div>
-                <div class="item__pm10">fine dust: ${playgroundInfo.pm10}</div>
-                <div class="item__pm2_5">ultrafine dust: ${playgroundInfo.pm2_5}</div>
-                <div class="item__air">air: ${playgroundInfo.air}</div>
+                <div class="item__loc">(${playgroundInfo.loc})</div>
+                <div class="item__dust">
+                    <img class="img__dust" src="https://cdn-icons-png.flaticon.com/128/7034/7034711.png"/>
+                    <div class="item__pm10">fine dust: ${playgroundInfo.dust},</div>
+                    <div class="item__pm2_5">ultrafine dust: ${playgroundInfo.ultradust}</div>
+                </div>
+                <div class="item__weather">
+                    <img class="img__weather" src="https://cdn-icons-png.flaticon.com/512/128/128972.png" />
+                    <div class="item__air">air: ${playgroundInfo.air},</div>
+                    <div class="item__temperature">temperature: ${playgroundInfo.temperature},</div>
+                    <div class="item__humidity">humidity: ${playgroundInfo.humidity}</div>
+                </div>
             </div>
+            
             `;
           } else {
             content = `
             <div class="map__item">
                 <div class="item__title">
-                    ${name} (${loc})
+                    ${name} 
                 </div>
-                <div class="item__pm10">fine dust: ${pm10}</div>
-                <div class="item__pm2_5">ultrafine dust: ${pm2_5}</div>
-                <div class="item__air">air: ${air}</div>
+                <div class="item__loc">(${loc})</div>
+                <div class="item__dust">
+                    <img class="img__dust" src="https://cdn-icons-png.flaticon.com/128/7034/7034711.png"/>
+                    <div class="item__pm10">fine dust: ${pm10},</div>
+                    <div class="item__pm2_5">ultrafine dust: ${pm2_5}</div>
+                </div>
+                <div class="item__weather">
+                    <img class="img__weather" src="https://cdn-icons-png.flaticon.com/512/128/128972.png" />
+                    <div class="item__air">air: ${air},</div>
+                    <div class="item__temperature">temperature: ${tem},</div>
+                    <div class="item__humidity">humidity: ${hum}</div>
+                </div>
             </div>
             `;
           }
