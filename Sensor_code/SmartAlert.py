@@ -1,15 +1,19 @@
+import threading  # threading for simultaneous use of LCD and speaker
+from time import sleep
+import I2C_LCD_driver  # import the I2C_LCD_driver module
+import pygame
+import os
+from gtts import gTTS
+from DB import Database
 import serial
 import RPi.GPIO as GPIO
 import time
 
-from gtts import gTTS
-import os
-import pygame
+import Adafruit_DHT
 
-import I2C_LCD_driver  # import the I2C_LCD_driver module
-from time import sleep
+sensor = Adafruit_DHT.DHT11
+gpio = 4
 
-import threading  # threading for simultaneous use of LCD and speaker
 
 mylcd = I2C_LCD_driver.lcd()  # initialize the LCD display
 
@@ -148,6 +152,9 @@ def show_thread(standard):
     time.sleep(1)
 
 
+humidity, temperature = Adafruit_DHT.read_retry(sensor, gpio)
+
+
 def main():
     init()
     ser = serial.Serial("/dev/ttyUSB0")
@@ -190,7 +197,8 @@ def main():
         # Read data from MQ135 sensor
         air_quality = readadc(mq135_apin, SPICLK, SPIMOSI, SPIMISO, SPICS)
 
-        result = "pm25: {}, pm10: {}, air: {}".format(pm25, pm10, air_quality)
+        result = "pm25: {}, pm10: {}, air: {} Temp : {:.1f}*C  Humidity : {:.1f}%".format(
+            pm25, pm10, air_quality, temperature, humidity)
         print(result)
 
         # check PIR sensor and Ultrasonic sensor
