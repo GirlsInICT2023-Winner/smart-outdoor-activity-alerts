@@ -3,8 +3,24 @@ import styled from "styled-components";
 import "./Map.css";
 import Weather from "../atoms/Weather";
 import Logo from "../atoms/Logo";
+import { useOnClickOutside } from "../../hooks/useOnClickOuiside";
+import Guide from "./Guide";
 
 const Content = () => {
+  const [showModal, setShowModal] = useState(false);
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const modalRef = useRef();
+  useOnClickOutside(modalRef, () => {
+    setShowModal(false);
+  });
+
   const [city, setCity] = useState("");
   const mapElement = useRef(null);
   const [playgroundInfo, setPlaygroundInfo] = useState(null);
@@ -276,7 +292,7 @@ const Content = () => {
           },
           icon: {
             url: "",
-            size: new google.maps.Size(50, 20),
+            size: new google.maps.Size(70, 30),
           },
           clickable: true, // 마커 및 라벨 클릭 가능하도록 설정
         });
@@ -293,14 +309,24 @@ const Content = () => {
                 <div class="item__loc">(${playgroundInfo.loc})</div>
                 <div class="item__dust">
                     <img class="img__dust" src="https://cdn-icons-png.flaticon.com/128/7034/7034711.png"/>
-                    <div class="item__pm10">fine dust: ${playgroundInfo.dust},</div>
-                    <div class="item__pm2_5">ultrafine dust: ${playgroundInfo.ultradust}</div>
+                    <div class="item__pm10">fine dust: ${
+                      playgroundInfo.dust
+                    },</div>
+                    <div class="item__pm2_5">ultrafine dust: ${
+                      playgroundInfo.ultradust
+                    }</div>
                 </div>
                 <div class="item__weather">
                     <img class="img__weather" src="https://cdn-icons-png.flaticon.com/512/128/128972.png" />
-                    <div class="item__air">air: ${playgroundInfo.air === 0 ? "SAFE" : "DANGEROUS"},</div>
-                    <div class="item__temperature">temperature: ${playgroundInfo.temperature},</div>
-                    <div class="item__humidity">humidity: ${playgroundInfo.humidity}</div>
+                    <div class="item__air">air: ${
+                      playgroundInfo.air === 0 ? "SAFE" : "DANGEROUS"
+                    },</div>
+                    <div class="item__temperature">temperature: ${
+                      playgroundInfo.temperature
+                    },</div>
+                    <div class="item__humidity">humidity: ${
+                      playgroundInfo.humidity
+                    }</div>
                 </div>
             </div>
             
@@ -367,7 +393,19 @@ const Content = () => {
         </Title>
         <Logo></Logo>
       </Header>
-
+      <img
+        src="https://w7.pngwing.com/pngs/898/422/png-transparent-help-info-question-support-education-set-icon.png"
+        alt="guide"
+        className="floating_button"
+        onClick={handleOpenModal}
+      />
+      {showModal && (
+        <Guide
+          showModal={showModal}
+          handleCloseModal={handleCloseModal}
+          modalRef={modalRef}
+        />
+      )}
       <Wrapper>
         <Weather city={city} currentPosition={currentPosition} />
         <MapWrapper className="map">
@@ -382,7 +420,7 @@ export default Content;
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 1000px;
+  height: 1200px;
   margin-left: 15px;
   display: flex;
   flex-direction: row;
@@ -398,6 +436,7 @@ const Header = styled.div`
 
 const Title = styled.h1`
   padding: 15px;
+  font-size: 50px;
 `;
 
 const MapWrapper = styled.div`

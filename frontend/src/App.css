@@ -1,0 +1,11 @@
+.floating_button {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  cursor: pointer;
+  z-index: 1;
+}

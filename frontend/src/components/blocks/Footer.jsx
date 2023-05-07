@@ -19,6 +19,6 @@ const Wrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   color: black;
-  font-size: 16px;
+  font-size: 24px;
   align-items: flex-end;
 `;
