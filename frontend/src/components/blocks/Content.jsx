@@ -259,9 +259,9 @@ const Content = () => {
       }) => {
         let labelClass;
 
-        if (level === "Good") {
+        if (level === "PERMITTED") {
           labelClass = "icon-label-green";
-        } else if (level === "Moderate") {
+        } else if (level === "CAUTION") {
           labelClass = "icon-label-yellow";
         } else {
           labelClass = "icon-label-red";
