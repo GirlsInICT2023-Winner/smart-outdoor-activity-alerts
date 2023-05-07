@@ -3,8 +3,24 @@ import styled from "styled-components";
 import "./Map.css";
 import Weather from "../atoms/Weather";
 import Logo from "../atoms/Logo";
+import { useOnClickOutside } from "../../hooks/useOnClickOuiside";
+import Guide from "./Guide";
 
 const Content = () => {
+  const [showModal, setShowModal] = useState(false);
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const modalRef = useRef();
+  useOnClickOutside(modalRef, () => {
+    setShowModal(false);
+  });
+
   const [city, setCity] = useState("");
   const mapElement = useRef(null);
   const [playgroundInfo, setPlaygroundInfo] = useState(null);
@@ -377,7 +393,19 @@ const Content = () => {
         </Title>
         <Logo></Logo>
       </Header>
-
+      <img
+        src="https://w7.pngwing.com/pngs/898/422/png-transparent-help-info-question-support-education-set-icon.png"
+        alt="guide"
+        className="floating_button"
+        onClick={handleOpenModal}
+      />
+      {showModal && (
+        <Guide
+          showModal={showModal}
+          handleCloseModal={handleCloseModal}
+          modalRef={modalRef}
+        />
+      )}
       <Wrapper>
         <Weather city={city} currentPosition={currentPosition} />
         <MapWrapper className="map">
