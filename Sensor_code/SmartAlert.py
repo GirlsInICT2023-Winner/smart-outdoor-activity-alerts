@@ -1,10 +1,3 @@
-import threading  # threading for simultaneous use of LCD and speaker
-from time import sleep
-import I2C_LCD_driver  # import the I2C_LCD_driver module
-import pygame
-import os
-from gtts import gTTS
-from DB import Database
 import serial
 import RPi.GPIO as GPIO
 import time
@@ -14,6 +7,17 @@ import Adafruit_DHT
 sensor = Adafruit_DHT.DHT11
 gpio = 4
 
+from db import Database
+db = Database()
+
+from gtts import gTTS
+import os
+import pygame
+
+import I2C_LCD_driver  # import the I2C_LCD_driver module
+from time import sleep
+
+import threading  # threading for simultaneous use of LCD and speaker
 
 mylcd = I2C_LCD_driver.lcd()  # initialize the LCD display
 
@@ -151,10 +155,6 @@ def show_thread(standard):
         mylcd.lcd_display_string(str_pad, 2)
     time.sleep(1)
 
-
-humidity, temperature = Adafruit_DHT.read_retry(sensor, gpio)
-
-
 def main():
     init()
     ser = serial.Serial("/dev/ttyUSB0")
@@ -191,29 +191,38 @@ def main():
 
         # Read data from SDS011 sensor
         data = ser.read(10)
-        pm25 = int.from_bytes(data[2:4], byteorder="little") / 10
-        pm10 = int.from_bytes(data[4:6], byteorder="little") / 10
+        ultradust = int.from_bytes(data[2:4], byteorder="little") / 10
+        dust = int.from_bytes(data[4:6], byteorder="little") / 10
+        
+        humidity, temperature = Adafruit_DHT.read_retry(sensor, gpio)
 
         # Read data from MQ135 sensor
-        air_quality = readadc(mq135_apin, SPICLK, SPIMOSI, SPIMISO, SPICS)
+        air = readadc(mq135_apin, SPICLK, SPIMOSI, SPIMISO, SPICS)
+        
+        if dust <= 50 and ultradust <= 25 and air <= 799:
+            level = "PERMITTED"
+        elif dust >= 101 or ultradust >= 51 or air >= 800:
+            level = "PROHIBITED"
+        else:
+            level = "CAUTION"
 
-        result = "pm25: {}, pm10: {}, air: {} Temp : {:.1f}*C  Humidity : {:.1f}%".format(
-            pm25, pm10, air_quality, temperature, humidity)
+        result = "ultradust: {}, dust: {}, air: {} Temp : {}*C  Humidity : {}%".format(ultradust, dust, air, temperature, humidity)
         print(result)
+        db.insert( dust, ultradust, level, air, temperature, humidity)
 
         # check PIR sensor and Ultrasonic sensor
         # calibrate excessively sensitive PIR sensors
-        if (distance < 5 and GPIO.input(PIR_PIN)) or distance < 5:
-            if pm10 <= 50 and pm25 <= 25 and air_quality <= 799:
-                status = "PERMITTED"
-            elif pm10 >= 101 or pm25 >= 51 or air_quality >= 800:
-                status = "PROHIBITED"
+        if (distance < 10 and GPIO.input(PIR_PIN)) or distance < 10:
+            if dust <= 50 and ultradust <= 25 and air <= 799:
+                level = "PERMITTED"
+            elif dust >= 101 or ultradust >= 51 or air >= 800:
+                level = "PROHIBITED"
             else:
-                status = "CAUTION"
+                level = "CAUTION"
 
             # trigger display and voice output
-            show_t = threading.Thread(target=show_thread, args=(status,))
-            speak_t = threading.Thread(target=speak_thread, args=(status,))
+            show_t = threading.Thread(target=show_thread, args=(level,))
+            speak_t = threading.Thread(target=speak_thread, args=(level,))
             show_t.start()
             speak_t.start()
             # once executed, give a 65 second period & parsing stopped
