@@ -87,10 +87,10 @@ const Content = () => {
     const markers = [
       {
         playgroundIdx: 99,
-        name: playgroundInfo.name,
-        loc: playgroundInfo.loc,
-        lat: playgroundInfo.lat,
-        lng: playgroundInfo.lng,
+        name: "Myongji University", 
+        loc: "34, Geobukgol-ro, Seodaemun-gu, Seoul", 
+        lat: 37.5802219,
+        lng: 126.9226047,
         pm10: playgroundInfo.dust,
         pm2_5: playgroundInfo.ultradust,
         air: playgroundInfo.air === 0 ? "SAFE" : "DANGEROUS",
@@ -299,40 +299,40 @@ const Content = () => {
 
         marker.addListener("click", () => {
           // marker 를 클릭하면 보여줄 화면
-          let content;
-          if (playgroundIdx === 99) {
-            content = `
-            <div class="map__item">
-                <div class="item__title">
-                    ${playgroundInfo.name} 
-                </div>
-                <div class="item__loc">(${playgroundInfo.loc})</div>
-                <div class="item__dust">
-                    <img class="img__dust" src="https://cdn-icons-png.flaticon.com/128/7034/7034711.png"/>
-                    <div class="item__pm10">fine dust: ${
-                      playgroundInfo.dust
-                    },</div>
-                    <div class="item__pm2_5">ultrafine dust: ${
-                      playgroundInfo.ultradust
-                    }</div>
-                </div>
-                <div class="item__weather">
-                    <img class="img__weather" src="https://cdn-icons-png.flaticon.com/512/128/128972.png" />
-                    <div class="item__air">air: ${
-                      playgroundInfo.air === 0 ? "SAFE" : "DANGEROUS"
-                    },</div>
-                    <div class="item__temperature">temperature: ${
-                      playgroundInfo.temperature
-                    },</div>
-                    <div class="item__humidity">humidity: ${
-                      playgroundInfo.humidity
-                    }</div>
-                </div>
-            </div>
+          // let content;
+          // if (playgroundIdx === 99) {
+          //   content = `
+          //   <div class="map__item">
+          //       <div class="item__title">
+          //           ${playgroundInfo.name} 
+          //       </div>
+          //       <div class="item__loc">(${playgroundInfo.loc})</div>
+          //       <div class="item__dust">
+          //           <img class="img__dust" src="https://cdn-icons-png.flaticon.com/128/7034/7034711.png"/>
+          //           <div class="item__pm10">fine dust: ${
+          //             playgroundInfo.dust
+          //           },</div>
+          //           <div class="item__pm2_5">ultrafine dust: ${
+          //             playgroundInfo.ultradust
+          //           }</div>
+          //       </div>
+          //       <div class="item__weather">
+          //           <img class="img__weather" src="https://cdn-icons-png.flaticon.com/512/128/128972.png" />
+          //           <div class="item__air">air: ${
+          //             playgroundInfo.air === 0 ? "SAFE" : "DANGEROUS"
+          //           },</div>
+          //           <div class="item__temperature">temperature: ${
+          //             playgroundInfo.temperature
+          //           },</div>
+          //           <div class="item__humidity">humidity: ${
+          //             playgroundInfo.humidity
+          //           }</div>
+          //       </div>
+          //   </div>
             
-            `;
-          } else {
-            content = `
+          //   `;
+          // } else {
+            const content = `
             <div class="map__item">
                 <div class="item__title">
                     ${name} 
@@ -351,7 +351,7 @@ const Content = () => {
                 </div>
             </div>
             `;
-          }
+          // }
 
           infoWindow.setContent(content);
           infoWindow.open({
