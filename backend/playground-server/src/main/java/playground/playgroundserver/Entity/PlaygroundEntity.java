@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "playground")
 public class PlaygroundEntity{
     @Id
@@ -46,7 +45,7 @@ public class PlaygroundEntity{
     private Double air;
 
     @Column(name = "createdAt")
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     @Column(name = "temperature")
     private Double temperature;
@@ -58,7 +57,7 @@ public class PlaygroundEntity{
     public PlaygroundEntity(long idx, String name, String loc,
                             Double lat, Double lng, Double dust,
                             String pir, Double ultradust, String level,
-                            Double air, LocalDateTime createdAt,
+                            Double air, String createdAt,
                             Double temperature, Double humidity){
         this.idx = idx;
         this.name = name;

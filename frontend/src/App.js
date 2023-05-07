@@ -4,6 +4,7 @@ import Content from "./components/blocks/Content";
 import Footer from "./components/blocks/Footer";
 
 function App() {
+
   return (
     <Wrapper>
       <Content></Content>

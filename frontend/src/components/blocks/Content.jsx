@@ -7,30 +7,26 @@ import Logo from "../atoms/Logo";
 const Content = () => {
   const [city, setCity] = useState("");
   const mapElement = useRef(null);
-  const [playgroundInfo, setPlaygroundInfo] = useState([]);
+  const [playgroundInfo, setPlaygroundInfo] = useState(null);
+  const [currentPosition, setCurrentPosition] = useState(null);
 
   // api 로 받아옴
   useEffect(() => {
+    console.log("loading...");
     fetch("/api/playground")
-      .then((response) => response.text())
+      .then((response) => response.json())
       .then((info) => {
-        console.log(`info ${info}`);
-        setPlaygroundInfo(info);
+        console.log(info.result);
+        setPlaygroundInfo(info.result);
+        loadScript(
+          `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_MAP_KEY}&libraries=places&callback=initMap`
+        );
       });
   }, []);
 
-  // 컴포넌트가 마운트될때 수동으로 스크립트를 넣어줌
-  // script보다 window.initMap이 먼저 선언되도록
-  const loadScript = useCallback((url) => {
-    const firstScript = window.document.getElementsByTagName("script")[0];
-    const newScript = window.document.createElement("script");
-    newScript.src = url;
-    newScript.async = true;
-    newScript.defer = true;
-    firstScript?.parentNode?.insertBefore(newScript, firstScript);
-  }, []);
 
-  const [currentPosition, setCurrentPosition] = useState(null);
+  
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -73,6 +69,10 @@ const Content = () => {
       [currentPosition]
     );
 
+    // loadscript 
+    
+    
+
     const markers = [
       {
         playgroundIdx: 99,
@@ -101,149 +101,7 @@ const Content = () => {
         tem: 14.71,
         hum: 47,
       },
-      {
-        playgroundIdx: 1,
-        name: "Gajaeul Children's Park",
-        loc: "385-2 Namgajwa-dong, Seodaemun-gu, Seoul",
-        lat: 37.582365,
-        lng: 126.9104757,
-        pm10: 20,
-        pm2_5: 10,
-        air: 10.88,
-        level: "Moderate",
-        tem: 14.71,
-        hum: 47,
-      },
-      {
-        playgroundIdx: 2,
-        name: "Yeonhui Children's Park",
-        loc: "446-182, Yeonhui-dong, Seodaemun-gu, Seoul",
-        lat: 37.5677003,
-        lng: 126.921475,
-        pm10: 100,
-        pm2_5: 110,
-        air: 10.88,
-        level: "Moderate",
-        tem: 14.71,
-        hum: 47,
-      },
-      {
-        playgroundIdx: 3,
-        name: "Yeonnam Children's Park",
-        loc: "326-8, Namgajwa-dong, Seodaemun-gu, Seoul",
-        lat: 37.5781713,
-        lng: 126.9253077,
-        pm10: 40,
-        pm2_5: 140,
-        air: 10.88,
-        level: "Moderate",
-        tem: 14.71,
-        hum: 47,
-      },
-      {
-        playgroundIdx: 4,
-        name: "Triangle Small Park",
-        loc: "190-9 Namgajwa-dong, Seodaemun-gu, Seoul",
-        lat: 37.5764431,
-        lng: 126.920741,
-        pm10: 50,
-        pm2_5: 70,
-        air: 10.88,
-        level: "Moderate",
-        tem: 14.71,
-        hum: 47,
-      },
-      {
-        playgroundIdx: 5,
-        name: "Gajwa Children's Park",
-        loc: "45, Gajaeul-ro, Seodaemun-gu, Seoul",
-        lat: 37.5758104,
-        lng: 126.9203916,
-        pm10: 60,
-        pm2_5: 50,
-        air: 10.88,
-        level: "Moderate",
-        tem: 14.71,
-        hum: 47,
-      },
-      {
-        playgroundIdx: 6,
-        name: "Eungam 4-dong Children's Park",
-        loc: "742-9, Eungam-dong, Eunpyeong-gu, Seoul",
-        lat: 37.5832817,
-        lng: 126.9160862,
-        pm10: 70,
-        pm2_5: 55,
-        air: 10.88,
-        level: "Moderate",
-        tem: 14.71,
-        hum: 47,
-      },
-      {
-        playgroundIdx: 7,
-        name: "Magpie Village Garden",
-        loc: "366-4, Bukgajwa-dong, Seodaemun-gu, Seoul",
-        lat: 37.5791415,
-        lng: 126.9069372,
-        pm10: 80,
-        pm2_5: 50,
-        air: 10.88,
-        level: "Good",
-        tem: 14.71,
-        hum: 47,
-      },
-      {
-        playgroundIdx: 8,
-        name: "Shinga Children's Park",
-        loc: "29-51, Geobukgol-ro 22-gil, Seodaemun-gu, Seoul",
-        lat: 37.5801986,
-        lng: 126.9083371,
-        pm10: 90,
-        pm2_5: 60,
-        air: 10.88,
-        level: "Good",
-        tem: 14.71,
-        hum: 47,
-      },
-      {
-        playgroundIdx: 9,
-        name: "Ansan Urban Nature Park",
-        loc: "Yeonhui-dong, Seodaemun-gu, Seoul",
-        lat: 37.5719319,
-        lng: 126.9429294,
-        pm10: 110,
-        pm2_5: 90,
-        air: 10.88,
-        level: "Good",
-        tem: 14.71,
-        hum: 47,
-      },
-      {
-        playgroundIdx: 10,
-        name: "Nami Village Children's Park",
-        loc: "368, Namgajwa-dong, Seodaemun-gu, Seoul",
-        lat: 37.57906,
-        lng: 126.9196971,
-        pm10: 110,
-        pm2_5: 50,
-        air: 10.88,
-        level: "Unhealthy",
-        tem: 14.71,
-        hum: 47,
-      },
-      {
-        playgroundIdx: 11,
-        name: "Yeonseo Children's Park",
-        loc: "519-7 Yeonhui-dong, Seodaemun-gu, Seoul",
-        lat: 37.5720951,
-        lng: 126.923266,
-        pm10: 100,
-        pm2_5: 80,
-        air: 10.88,
-        level: "Unhealthy",
-        tem: 14.71,
-        hum: 47,
-      },
+      
     ];
 
     const infoWindow = new google.maps.InfoWindow();
@@ -343,15 +201,27 @@ const Content = () => {
     map.addListener("click", () => {
       infoWindow.close();
     });
-  }, [currentPosition]);
+  }, [currentPosition, playgroundInfo]);
+
+   const loadScript = useCallback((url) => {
+    const firstScript = window.document.getElementsByTagName("script")[0];
+    const newScript = window.document.createElement("script");
+    newScript.src = url;
+    newScript.async = true;
+    newScript.defer = true;
+    
+     // 스크립트 로딩이 끝나면 initMap 함수를 호출
+      newScript.onload = () => {
+        window.initMap();
+      };
+
+      firstScript?.parentNode?.insertBefore(newScript, firstScript);
+    }, []);
 
   useEffect(() => {
-    loadScript(
-      `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_MAP_KEY}&callback=initMap&language=en`
-    );
-
+  
     window.initMap = initMap;
-  }, [initMap, loadScript]);
+  }, [initMap]);
 
   return (
     <div>
