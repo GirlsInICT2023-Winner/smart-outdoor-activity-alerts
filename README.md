@@ -9,13 +9,17 @@ Therefore, we will develop an ‘Air quality monitoring system’ for children's
 
 
 ## 2. Architecture diagram
-![Best awards 예정 피피티](https://user-images.githubusercontent.com/76530562/236816233-ca5f5c02-e5d5-4071-9406-92edd9c552e6.png)
+<img width="100%" alt="image" src="https://user-images.githubusercontent.com/76530562/236816233-ca5f5c02-e5d5-4071-9406-92edd9c552e6.png">
 
 
 
 ## 3. Output
+![image](https://user-images.githubusercontent.com/76530562/236927892-be715db0-7ee4-40d1-be79-ef2f273c2483.png)
+![image](https://user-images.githubusercontent.com/76530562/236926021-6661b192-11da-43d5-a15d-f68e24f05b0d.png)
+![image](https://user-images.githubusercontent.com/76530562/236925862-6ddc577c-10ca-48d5-996f-ad4fa71eb1a5.png)
 
-## 4. Team. Winnner
+
+## 4. Team - Winnner
 <table>
     <tr align="center">
         <td><B>Sohyeon Kim<B></td>
