@@ -1,21 +1,19 @@
 import React from "react";
-import styled from "styled-components";
+import "./Modal.css";
 
-const Guide = ({ showModal, handleCloseModal, modalRef }) => {
+const Guide = ({ handleCloseModal, modalRef }) => {
   return (
     <div>
-      {/* {showModal && ( */}
-      <ModalOverlay>
-        <ModalWrapper ref={modalRef}>
-          <ModalHeader>
-            <ModalCloseButton onClick={handleCloseModal}>X</ModalCloseButton>
-          </ModalHeader>
-          <ModalBody>
-            <Wrapper>
-              <h1>
-                How to Set Standard 
-                For Children
-              </h1>
+      <div className="ModalOverlay">
+        <div className="ModalWrapper" ref={modalRef}>
+          <div className="ModalHeader">
+            <button className="ModalCloseButton" onClick={handleCloseModal}>
+              X
+            </button>
+          </div>
+          <div className="ModalBody">
+            <div className="Wrapper_">
+              <h1>How to Set Standard For Children</h1>
               <img
                 src="https://wpvip.edutopia.org/wp-content/uploads/2022/10/iStock-896461594_master.jpg?w=2880&quality=85"
                 alt="img"
@@ -62,62 +60,12 @@ const Guide = ({ showModal, handleCloseModal, modalRef }) => {
                 or air quality is 500 or higher.
                 <br />
               </div>
-            </Wrapper>
-          </ModalBody>
-        </ModalWrapper>
-      </ModalOverlay>
-      {/* )} */}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default Guide;
-
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-`;
-
-const ModalWrapper = styled.div`
-  background-color: white;
-  padding: 0;
-  border-radius: 8px;
-`;
-
-const Wrapper = styled.div`
-  width: 800px;
-  padding: 0px 24px 24px 24px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const ModalHeader = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 10px;
-`;
-
-const ModalCloseButton = styled.button`
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  &:focus {
-    outline: none;
-  }
-`;
-
-const ModalBody = styled.div`
-  padding: 1rem;
-`;

@@ -87,10 +87,10 @@ const Content = () => {
     const markers = [
       {
         playgroundIdx: 99,
-        name: "Myongji University", 
-        loc: "34, Geobukgol-ro, Seodaemun-gu, Seoul", 
-        lat: 37.5802219,
-        lng: 126.9226047,
+        name: playgroundInfo.name,
+        loc: playgroundInfo.loc,
+        lat: playgroundInfo.lat,
+        lng: playgroundInfo.lng,
         pm10: playgroundInfo.dust,
         pm2_5: playgroundInfo.ultradust,
         air: playgroundInfo.air === 0 ? "SAFE" : "DANGEROUS",
@@ -98,20 +98,7 @@ const Content = () => {
         tem: playgroundInfo.temperature,
         hum: playgroundInfo.humidity,
       },
-      // 더미
-      // {
-      //   playgroundIdx: 0,
-      //   name: "Baengnyeon Children's Park",
-      //   loc: "50, Myeongjidae-gil, Seodaemun-gu, Seoul",
-      //   lat: 37.5823359,
-      //   lng: 126.9241363,
-      //   pm10: 10,
-      //   pm2_5: 10,
-      //   air: "SAFE",
-      //   level: "PERMITTED",
-      //   tem: 14.71,
-      //   hum: 47,
-      // },
+
       {
         playgroundIdx: 1,
         name: "Gajaeul Children's Park",
@@ -152,19 +139,6 @@ const Content = () => {
         hum: 47,
       },
       {
-        playgroundIdx: 4,
-        name: "Triangle Small Park",
-        loc: "190-9 Namgajwa-dong, Seodaemun-gu, Seoul",
-        lat: 37.5764431,
-        lng: 126.920741,
-        pm10: 50,
-        pm2_5: 70,
-        air: "SAFE",
-        level: "PROHIBITED",
-        tem: 14.71,
-        hum: 47,
-      },
-      {
         playgroundIdx: 5,
         name: "Gajwa Children's Park",
         loc: "45, Gajaeul-ro, Seodaemun-gu, Seoul",
@@ -190,45 +164,7 @@ const Content = () => {
         tem: 14.71,
         hum: 47,
       },
-      {
-        playgroundIdx: 7,
-        name: "Magpie Village Garden",
-        loc: "366-4, Bukgajwa-dong, Seodaemun-gu, Seoul",
-        lat: 37.5791415,
-        lng: 126.9069372,
-        pm10: 80,
-        pm2_5: 50,
-        air: "SAFE",
-        level: "CAUTION",
-        tem: 14.71,
-        hum: 47,
-      },
-      {
-        playgroundIdx: 8,
-        name: "Shinga Children's Park",
-        loc: "29-51, Geobukgol-ro 22-gil, Seodaemun-gu, Seoul",
-        lat: 37.5801986,
-        lng: 126.9083371,
-        pm10: 90,
-        pm2_5: 60,
-        air: "SAFE",
-        level: "PROHIBITED",
-        tem: 14.71,
-        hum: 47,
-      },
-      {
-        playgroundIdx: 9,
-        name: "Ansan Urban Nature Park",
-        loc: "Yeonhui-dong, Seodaemun-gu, Seoul",
-        lat: 37.5719319,
-        lng: 126.9429294,
-        pm10: 110,
-        pm2_5: 90,
-        air: "SAFE",
-        level: "PROHIBITED",
-        tem: 14.71,
-        hum: 47,
-      },
+
       {
         playgroundIdx: 10,
         name: "Nami Village Children's Park",
@@ -299,39 +235,39 @@ const Content = () => {
 
         marker.addListener("click", () => {
           // marker 를 클릭하면 보여줄 화면
-          // let content;
-          // if (playgroundIdx === 99) {
-          //   content = `
-          //   <div class="map__item">
-          //       <div class="item__title">
-          //           ${playgroundInfo.name} 
-          //       </div>
-          //       <div class="item__loc">(${playgroundInfo.loc})</div>
-          //       <div class="item__dust">
-          //           <img class="img__dust" src="https://cdn-icons-png.flaticon.com/128/7034/7034711.png"/>
-          //           <div class="item__pm10">fine dust: ${
-          //             playgroundInfo.dust
-          //           },</div>
-          //           <div class="item__pm2_5">ultrafine dust: ${
-          //             playgroundInfo.ultradust
-          //           }</div>
-          //       </div>
-          //       <div class="item__weather">
-          //           <img class="img__weather" src="https://cdn-icons-png.flaticon.com/512/128/128972.png" />
-          //           <div class="item__air">air: ${
-          //             playgroundInfo.air === 0 ? "SAFE" : "DANGEROUS"
-          //           },</div>
-          //           <div class="item__temperature">temperature: ${
-          //             playgroundInfo.temperature
-          //           },</div>
-          //           <div class="item__humidity">humidity: ${
-          //             playgroundInfo.humidity
-          //           }</div>
-          //       </div>
-          //   </div>
-            
-          //   `;
-          // } else {
+          let content;
+          if (playgroundIdx === 99) {
+            content = `
+            <div class="map__item">
+                <div class="item__title">
+                    ${playgroundInfo.name}
+                </div>
+                <div class="item__loc">(${playgroundInfo.loc})</div>
+                <div class="item__dust">
+                    <img class="img__dust" src="https://cdn-icons-png.flaticon.com/128/7034/7034711.png"/>
+                    <div class="item__pm10">fine dust: ${
+                      playgroundInfo.dust
+                    },</div>
+                    <div class="item__pm2_5">ultrafine dust: ${
+                      playgroundInfo.ultradust
+                    }</div>
+                </div>
+                <div class="item__weather">
+                    <img class="img__weather" src="https://cdn-icons-png.flaticon.com/512/128/128972.png" />
+                    <div class="item__air">air: ${
+                      playgroundInfo.air === 0 ? "SAFE" : "DANGEROUS"
+                    },</div>
+                    <div class="item__temperature">temperature: ${
+                      playgroundInfo.temperature
+                    },</div>
+                    <div class="item__humidity">humidity: ${
+                      playgroundInfo.humidity
+                    }</div>
+                </div>
+            </div>
+
+            `;
+          } else {
             const content = `
             <div class="map__item">
                 <div class="item__title">
@@ -351,7 +287,7 @@ const Content = () => {
                 </div>
             </div>
             `;
-          // }
+          }
 
           infoWindow.setContent(content);
           infoWindow.open({
@@ -380,6 +316,14 @@ const Content = () => {
 
     firstScript?.parentNode?.insertBefore(newScript, firstScript);
   }, []);
+
+  useEffect(() => {
+    loadScript(
+      `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_MAP_KEY}&callback=initMap&language=en`
+    );
+
+    window.initMap = initMap;
+  }, [initMap, loadScript]);
 
   useEffect(() => {
     window.initMap = initMap;
