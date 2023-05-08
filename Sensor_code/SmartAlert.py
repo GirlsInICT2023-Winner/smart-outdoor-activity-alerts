@@ -212,7 +212,7 @@ def main():
 
         # check PIR sensor and Ultrasonic sensor
         # calibrate excessively sensitive PIR sensors
-        if (distance < 10 and GPIO.input(PIR_PIN)) or distance < 10:
+        if (distance < 30 and GPIO.input(PIR_PIN)):
             if dust <= 50 and ultradust <= 25 and air <= 799:
                 level = "PERMITTED"
             elif dust >= 101 or ultradust >= 51 or air >= 800:
