@@ -59,24 +59,29 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
     adcout >>= 1       # first bit is 'null' so drop it
     return adcout
 
-# main loop
-
 
 def main():
-    init()
+    init()  # call the init function to set up GPIO pins and SPI interface
     print("Please wait...")
-    time.sleep(2)
+    time.sleep(2)  # wait for 2 seconds for the sensor to warm up
+
+    # loop
     while True:
+        # read the analog value of air quality sensor connected to the specified analog pin using the specified SPI interface pins
         air_quality = readadc(mq135_apin, SPICLK, SPIMOSI, SPIMISO, SPICS)
 
-        if GPIO.input(mq135_dpin):
+        if GPIO.input(mq135_dpin):  # check if the digital output of the air quality sensor is HIGH
             print("No toxic gases detected")
+            # wait for 0.5 seconds before reading sensor data again
             time.sleep(0.5)
+
         else:
             print("Toxic gases detected!")
+            # print the raw analog value of the air quality sensor
             print("Current air quality AD value = " + str(air_quality))
             print("Current air quality is: " +
-                  str((air_quality / 1024.0) * 100) + "%")
+                  str((air_quality / 1024.0) * 100) + "%")  # convert the analog value to a percentage and print it
+            # wait for 0.5 seconds before reading sensor data again
             time.sleep(0.5)
 
 
